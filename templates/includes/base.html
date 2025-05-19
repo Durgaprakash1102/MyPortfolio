@@ -188,6 +188,24 @@
             const nav = document.getElementById('nav-links');
             nav.classList.toggle('active');
         }
+        
+document.addEventListener('DOMContentLoaded', function () {
+  document.body.addEventListener('click', function (e) {
+    const element = e.target.closest('a, button');
+    if (element) {
+      fetch('/track-click/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ element: element.innerText || element.href })
+      });
+    }
+  });
+});
+
+
     </script>
 
 </body>

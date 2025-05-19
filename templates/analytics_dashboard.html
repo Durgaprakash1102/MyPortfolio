@@ -1,0 +1,99 @@
+{% extends "includes/base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analytics Dashboard</title>
+  <style>
+    .hidden { display: none; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    .analytics-section { margin-top: 20px; }
+    .btn-toggle {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-toggle:hover {
+      background-color: #0056b3;
+    }
+    .btn-toggle.active {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Analytics Dashboard</h1>
+
+  <a href="{% url 'contact_list' %}" class="contact-btn-nav"><span>Contact List</span></a>
+  <a href="{% url 'logout' %}" class="contact-btn-nav"><span>Logout</span></a>
+
+
+  <!-- Toggle Buttons -->
+  <div>
+    <button class="btn-toggle active" onclick="toggleSection('visits')">👥 Visits Per Day</button>
+    <button class="btn-toggle" onclick="toggleSection('topPages')">🔗 Top Pages</button>
+    <button class="btn-toggle" onclick="toggleSection('linkedin')">💼 LinkedIn Visits</button>
+    <button class="btn-toggle" onclick="toggleSection('clicks')">🖱️ Top Clicked Elements</button>
+  </div>
+
+  <!-- Sections -->
+
+  <!-- Visits Per Day shown by default (no 'hidden' class) -->
+  <div id="visits" class="analytics-section">
+    <h2>👥 Visits Per Day</h2>
+    <table>
+      <tr><th>Date</th><th>Visits</th></tr>
+      {% for item in visits_per_day %}
+        <tr><td>{{ item.date }}</td><td>{{ item.visits }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- Other sections hidden initially -->
+  <div id="topPages" class="analytics-section hidden">
+    <h2>🔗 Top Pages</h2>
+    <table>
+      <tr><th>Path</th><th>Visits</th></tr>
+      {% for page in top_pages %}
+        <tr><td>{{ page.path }}</td><td>{{ page.visits }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div id="linkedin" class="analytics-section hidden">
+    <h2>💼 Visits from LinkedIn</h2>
+    <p>{{ linkedin_visits }} visits came from LinkedIn.</p>
+  </div>
+
+  <div id="clicks" class="analytics-section hidden">
+    <h2>🖱️ Top Clicked Elements</h2>
+    <table>
+      <tr><th>Element</th><th>Clicks</th></tr>
+      {% for item in top_clicks %}
+        <tr><td>{{ item.clicked_element }}</td><td>{{ item.total }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <script>
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      const allSections = document.querySelectorAll('.analytics-section');
+      allSections.forEach(s => s.classList.add('hidden'));  // Hide all sections
+      section.classList.remove('hidden');  // Show selected section
+
+      // Update active button
+      document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`button[onclick="toggleSection('${id}')"]`).classList.add('active');
+    }
+  </script>
+</body>
+</html>
+{% endblock %}

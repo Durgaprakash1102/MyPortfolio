@@ -61,3 +61,16 @@ class Resume(models.Model):
 
     def __str__(self):
         return self.file.name
+    
+
+
+class VisitorLog(models.Model):
+    ip_address = models.GenericIPAddressField()
+    user_agent = models.TextField()
+    referrer = models.URLField(null=True, blank=True)
+    path = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    clicked_element = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.ip_address} - {self.timestamp}"

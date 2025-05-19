@@ -15,7 +15,10 @@ urlpatterns = [
     path('certifications/', certification_list, name='certification_list'),
     path('contact/', contact_view, name='contact'),
     path('contacts/', contact_list, name='contact_list'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login')
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('analytics/', analytics_dashboard, name='analytics_dashboard'),
+    path('track-click/', track_click, name='track_click'),
+    path('logout/', logout_view, name='logout'),
 
 ]
 if settings.DEBUG:

@@ -36,6 +36,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Portfolio.middleware.VisitorLogMiddleware',
 ]
 
 ROOT_URLCONF = 'MyPortfolio.urls'
@@ -99,7 +100,7 @@ TIME_ZONE = 'Asia/Kolkata'
 
 LOGIN_URL = '/login/'
 
-LOGIN_REDIRECT_URL = '/contacts/'
+LOGIN_REDIRECT_URL = '/analytics/'
 
 
 USE_I18N = True
