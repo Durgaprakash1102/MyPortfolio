@@ -4,8 +4,8 @@ from django.contrib import messages
 from .forms import *
 
 def home(request):
-    return render(request,"home.html")
-
+    latest_resume = Resume.objects.order_by('-uploaded_at').first()
+    return render(request, "home.html", {"latest_resume": latest_resume})
 def about(request):
     return render(request,"about.html")
 
