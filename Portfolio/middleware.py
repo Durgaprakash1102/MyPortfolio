@@ -1,7 +1,7 @@
 from .models import VisitorLog
 from django.utils.timezone import now
 
-MY_IPS = ['your.pythonanywhere.ip.address']  # Add your PythonAnywhere IP here
+MY_IPS = ['DurgaPrakashPortfolio.pythonanywhere.com']  # Add your PythonAnywhere IP here
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
