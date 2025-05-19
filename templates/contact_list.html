@@ -1,0 +1,40 @@
+{% extends "includes/base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Submissions</title>
+</head>
+<body>
+    <h1>Contact Submissions</h1>
+
+    {% if contacts %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in contacts %}
+                <tr>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.subject }}</td>
+                    <td>{{ contact.message|linebreaksbr }}</td>
+                    <td>{{ contact.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No contact submissions found.</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

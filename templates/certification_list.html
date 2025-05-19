@@ -1,0 +1,39 @@
+{% extends "includes/base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certifications</title>
+</head>
+<body>
+    <h1>Certifications</h1>
+
+    {% for cert in certifications %}
+        <div style="margin-bottom: 30px;">
+            <h2>{{ cert.name }}</h2>
+            <p><strong>Issued By:</strong> {{ cert.issuing_organization }}</p>
+            <p><strong>Issued On:</strong> {{ cert.issue_date }}</p>
+            {% if cert.credential_id %}
+                <p><strong>Credential ID:</strong> {{ cert.credential_id }}</p>
+            {% endif %}
+            {% if cert.description %}
+                <p>{{ cert.description }}</p>
+            {% endif %}
+
+            <h4>Images:</h4>
+            {% for img in cert.images.all %}
+                <div style="margin-bottom: 10px;">
+                    <img src="{{ img.image.url }}" alt="Image" width="200">
+                    {% if img.caption %}
+                        <p>{{ img.caption }}</p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No images available.</p>
+            {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}

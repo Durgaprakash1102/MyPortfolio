@@ -1,0 +1,4 @@
+{% extends "includes/base.html" %}
+
+{% block content %}
+<h2>My Projects</h2> <ul> {% for project in projects %} <li> <strong>{{ project.title }}</strong><br> <em>{{ project.technology_stack }}</em><br> <p>{{ project.description }}</p> {% if project.url %} <a href="{{ project.url }}" target="_blank">View Project</a> {% endif %} </li> <hr> {% endfor %} </ul>{% endblock %}

@@ -1,0 +1,3 @@
+{% extends "includes/base.html" %}
+
+{% block content %}<h2>My Skills</h2> <ul> {% for skill in skills %} <li> <img src="{{ skill.image.url }}" width="50" alt="{{ skill.name }}"> {{ skill.name }} </li> {% endfor %} </ul> {% endblock %}

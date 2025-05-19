@@ -160,10 +160,11 @@
                 <ul id="nav-links">
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="/skills/">Skills</a></li>
-                    <li><a href="/projects/">Projects</a></li>
-                    <li><a href="/certifications/">Certifications</a></li>
-                    <li><a href="/contact/" class="contact-btn-nav"><span>Contact</span></a></li>
+                    <li><a href="{% url 'skill_list' %}">Skills</a></li>
+                    <li><a href="{% url 'project_list' %}">Projects</a></li>
+                    <li><a href="{% url 'certification_list' %}">Certifications</a></li>
+                    <li><a href="{% url 'contact' %}" class="contact-btn-nav"><span>Contact</span></a></li>
+                    
                 </ul>
             </nav>
             <button class="toggle-btn" onclick="toggleMenu()">☰</button>
