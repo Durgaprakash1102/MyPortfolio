@@ -1,39 +1,338 @@
 {% extends "includes/base.html" %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Certifications</title>
-</head>
-<body>
-    <h1>Certifications</h1>
+<style>
+  body {
+    background-color: #1b2b40;
+  }
 
-    {% for cert in certifications %}
-        <div style="margin-bottom: 30px;">
-            <h2>{{ cert.name }}</h2>
-            <p><strong>Issued By:</strong> {{ cert.issuing_organization }}</p>
-            <p><strong>Issued On:</strong> {{ cert.issue_date }}</p>
-            {% if cert.credential_id %}
-                <p><strong>Credential ID:</strong> {{ cert.credential_id }}</p>
-            {% endif %}
-            {% if cert.description %}
-                <p>{{ cert.description }}</p>
-            {% endif %}
+  h1 {
+    text-align: center;
+    color: #00c3ff;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+  }
 
-            <h4>Images:</h4>
-            {% for img in cert.images.all %}
-                <div style="margin-bottom: 10px;">
-                    <img src="{{ img.image.url }}" alt="Image" width="200">
-                    {% if img.caption %}
-                        <p>{{ img.caption }}</p>
-                    {% endif %}
-                </div>
-            {% empty %}
-                <p>No images available.</p>
-            {% endfor %}
-        </div>
-        <hr>
-    {% endfor %}
-</body>
-</html>
+  /* Grid container for certifications */
+  .certifications-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 30px;
+    max-width:90%;
+    margin: 0 auto 50px;
+  }
+
+  .certification-card {
+    background: #142338;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 10px rgba(0, 99, 182, 0.3);
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .certification-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 99, 182, 0.5);
+  }
+
+  .cert-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #00b0ff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #0066ff;
+    padding-bottom: 6px;
+  }
+
+  .cert-meta {
+    font-size: 0.9rem;
+    color: #90caf9;
+    margin-bottom: 12px;
+  }
+
+  .cert-meta strong {
+    color: #00b0ff;
+  }
+
+  .cert-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cfd8dc;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+  .cert-images {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .cert-image-wrapper {
+    position: relative; /* for caption positioning */
+    flex: 1 1 100px;
+    max-width: 220px;
+    height: 140px; /* fixed height for uniformity */
+    background: #1f3759;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cert-image-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 102, 255, 0.6);
+  }
+
+  .cert-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    pointer-events: none; /* so clicks bubble to wrapper */
+  }
+
+ .cert-caption {
+  position: absolute;
+  top: 12px;
+  left: 0;
+    background: linear-gradient(135deg, #00c3ff, #0066ff);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 15px;
+  border-radius: 4px 0 0 4px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+  font-family: 'Arial Black', Arial, sans-serif;
+  user-select: none;
+  z-index: 2;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 3px rgba(0,0,0,0.7);
+  max-width: 80%;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
+}
+.cert-caption::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 10px solid #a50000;
+}
+.cert-caption::before,
+.cert-caption::after {
+  display: none;
+}
+
+
+  hr {
+    border: none;
+    border-top: 1px solid #003366;
+    margin: 50px auto;
+    max-width: 900px;
+  }
+
+  /* Lightbox Modal */
+  #lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom:0;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+  }
+
+  #lightbox-overlay.active {
+    display: flex;
+  }
+
+  #lightbox-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 30px #00b0ff;
+    animation: zoomIn 0.3s ease forwards;
+    background: #0a1b32;
+  }
+
+  #lightbox-content img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+
+  #lightbox-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2.5rem;
+    color: #00b0ff;
+    cursor: pointer;
+    font-weight: 700;
+    user-select: none;
+    transition: color 0.3s ease;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+    text-align: center;
+  }
+
+  #lightbox-close:hover {
+    color: #0066ff;
+  }
+
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .certifications-grid {
+      grid-template-columns: 1fr;
+      gap: 30px 0;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .certification-card {
+      padding: 25px 20px;
+    }
+
+    .cert-images {
+      justify-content: center;
+    }
+
+    .cert-image-wrapper {
+      max-width: 100%;
+      flex: 1 1 100%;
+      height: auto;
+    }
+  }
+  h1 span {
+  font-size: 2.2rem;
+  color:#0066ff;
+}
+</style>
+
+<h1>Achievements <span>Unlocked</span></h1>
+
+<div class="certifications-grid">
+  {% for cert in certifications %}
+    <div class="certification-card">
+      <h2 class="cert-title">{{ cert.name }}</h2>
+      <p class="cert-meta"><strong>Issued By:</strong> {{ cert.issuing_organization }}</p>
+      <p class="cert-meta"><strong>Issued On:</strong> {{ cert.issue_date }}</p>
+      {% if cert.credential_id %}
+        <p class="cert-meta"><strong>Credential ID:</strong> {{ cert.credential_id }}</p>
+      {% endif %}
+      {% if cert.description %}
+        <p class="cert-description">{{ cert.description }}</p>
+      {% endif %}
+
+      <div class="cert-images">
+        {% for img in cert.images.all %}
+          <div class="cert-image-wrapper" tabindex="0">
+            <img src="{{ img.image.url }}" alt="Certification Image" data-full="{{ img.image.url }}">
+            {% if img.caption %}
+              <p class="cert-caption">{{ img.caption }}</p>
+            {% endif %}
+          </div>
+        {% empty %}
+          <p style="color:#bbb; font-style: italic;">No images available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox-overlay" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" tabindex="-1">
+  <div id="lightbox-content">
+    <button id="lightbox-close" aria-label="Close modal">&times;</button>
+    <img src="" alt="Expanded Certification Image" id="lightbox-image">
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const lightboxOverlay = document.getElementById('lightbox-overlay');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    document.querySelectorAll('.cert-image-wrapper').forEach(wrapper => {
+      wrapper.addEventListener('click', () => {
+        const img = wrapper.querySelector('img');
+        if (img && img.dataset.full) {
+          lightboxImage.src = img.dataset.full;
+          lightboxOverlay.classList.add('active');
+          lightboxOverlay.focus();
+        }
+      });
+      wrapper.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const img = wrapper.querySelector('img');
+          if (img && img.dataset.full) {
+            lightboxImage.src = img.dataset.full;
+            lightboxOverlay.classList.add('active');
+            lightboxOverlay.focus();
+          }
+        }
+      });
+    });
+
+    function closeLightbox() {
+      lightboxOverlay.classList.remove('active');
+      lightboxImage.src = '';
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+
+    lightboxOverlay.addEventListener('click', e => {
+      if (e.target === lightboxOverlay) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  });
+</script>
 {% endblock %}

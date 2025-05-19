@@ -1,4 +1,124 @@
 {% extends "includes/base.html" %}
 
 {% block content %}
-<h2>My Projects</h2> <ul> {% for project in projects %} <li> <strong>{{ project.title }}</strong><br> <em>{{ project.technology_stack }}</em><br> <p>{{ project.description }}</p> {% if project.url %} <a href="{{ project.url }}" target="_blank">View Project</a> {% endif %} </li> <hr> {% endfor %} </ul>{% endblock %}
+<style>
+  body {
+    background-color: #1b2b40;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+  }
+
+  h2 {
+    text-align: center;
+    color: #00c3ff;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  ul.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0;
+    list-style: none;
+    max-width: 90%;
+    margin: 0 auto 3rem;
+  }
+
+  ul.project-list li {
+    background: rgba(0, 195, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px 25px;
+    box-shadow: 0 8px 20px rgba(0, 99, 204, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  ul.project-list li:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 195, 255, 0.6);
+  }
+
+  ul.project-list li strong {
+    font-size: 1.4rem;
+    color: #00c3ff;
+    margin-bottom: 8px;
+  }
+
+  ul.project-list li em {
+    color: #66d9ff;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  ul.project-list li p {
+    flex-grow: 1;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  ul.project-list li a {
+    align-self: flex-start;
+    background: linear-gradient(135deg, #00c3ff, #0066ff);
+    padding: 10px 18px;
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0, 99, 255, 0.5);
+    transition: background 0.3s ease;
+  }
+
+  ul.project-list li a:hover {
+    background: linear-gradient(135deg, #0066ff, #00a0dd);
+  }
+
+  @media (max-width: 600px) {
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    ul.project-list {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 0 15px;
+    }
+
+    ul.project-list li {
+      padding: 18px 20px;
+    }
+  }
+   h1 {
+    font-size: 2rem;
+  color: #00c3ff;
+  margin-bottom: 40px;
+  font-weight: bold;
+  text-align: center;
+  }
+h1 span {
+  font-size: 2rem;
+  color:#0066ff;
+}
+</style>
+
+<h1>Accomplished <span>Projects</span></h1>
+<ul class="project-list">
+  {% for project in projects %}
+  <li>
+    <strong>{{ project.title }}</strong>
+    <em>{{ project.technology_stack }}</em>
+    <p>{{ project.description }}</p>
+    {% if project.url %}
+    <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">View Project</a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

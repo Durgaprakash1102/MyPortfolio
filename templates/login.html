@@ -1,28 +1,105 @@
 {% extends "includes/base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
+<style>
+  body {
+    background-color: #1b2b40;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    
+  }
+
+  .login-wrapper {
+    min-height: 74vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .login-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid #0066ff;
+  }
+
+  h1 {
+    margin-bottom: 25px;
+    color: #00c3ff;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #0066ff;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 1rem;
+  }
+
+  input::placeholder {
+    color: #ccc;
+  }
+
+  .log-button {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00c3ff, #0066ff);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .log-button:hover {
+    background: #00a0dd;
+  }
+
+  .error-message {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+  }
+</style>
+
+<div class="login-wrapper">
+  <div class="login-container">
     <h1>Login</h1>
     {% if form.errors %}
-        <p style="color:red;">Invalid username or password.</p>
+      <p class="error-message">Invalid username or password.</p>
     {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <p>
-            <label for="id_username">Username:</label>
-            {{ form.username }}
-        </p>
-        <p>
-            <label for="id_password">Password:</label>
-            {{ form.password }}
-        </p>
-        <button type="submit">Login</button>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <p>
+        <label for="id_username">Username:</label>
+        {{ form.username }}
+      </p>
+      <p>
+        <label for="id_password">Password:</label>
+        {{ form.password }}
+      </p>
+      <button type="submit" class="log-button">Login</button>
     </form>
-</body>
-</html>
+  </div>
+</div>
 {% endblock %}

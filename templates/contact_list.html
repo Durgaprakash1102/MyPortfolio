@@ -1,40 +1,109 @@
 {% extends "includes/base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Contact Submissions</title>
-</head>
-<body>
+<style>
+  body {
+    background-color: #1b2b40;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-submissions-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .contact-submissions-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px 40px;
+    max-width: 1000px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid #0066ff;
+    overflow-x: auto; /* Enable horizontal scroll */
+  }
+
+  .contact-submissions-container h1 {
+    color: #00c3ff;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .contact-submissions-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+    min-width: 700px; /* minimum width for the table */
+  }
+
+  .contact-submissions-table thead {
+    background-color: #0066ff;
+  }
+
+  .contact-submissions-table thead th {
+    padding: 12px 15px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .contact-submissions-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contact-submissions-table tbody tr:hover {
+    background: rgba(0, 99, 255, 0.2);
+  }
+
+  .contact-submissions-table tbody td {
+    padding: 12px 15px;
+    vertical-align: top;
+  }
+
+  /* Just add some padding adjustment on smaller screens */
+  @media (max-width: 768px) {
+    .contact-submissions-container {
+      padding: 20px 15px;
+      border-radius: 15px;
+    }
+  }
+</style>
+
+<div class="contact-submissions-wrapper">
+  <div class="contact-submissions-container">
     <h1>Contact Submissions</h1>
 
     {% if contacts %}
-        <table border="1" cellpadding="5" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Subject</th>
-                    <th>Message</th>
-                    <th>Submitted At</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for contact in contacts %}
-                <tr>
-                    <td>{{ contact.name }}</td>
-                    <td>{{ contact.email }}</td>
-                    <td>{{ contact.subject }}</td>
-                    <td>{{ contact.message|linebreaksbr }}</td>
-                    <td>{{ contact.created_at|date:"Y-m-d H:i" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table class="contact-submissions-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for contact in contacts %}
+            <tr>
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.email }}</td>
+              <td>{{ contact.subject }}</td>
+              <td>{{ contact.message|linebreaksbr }}</td>
+              <td>{{ contact.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% else %}
-        <p>No contact submissions found.</p>
+      <p>No contact submissions found.</p>
     {% endif %}
-</body>
-</html>
+  </div>
+</div>
 {% endblock %}
