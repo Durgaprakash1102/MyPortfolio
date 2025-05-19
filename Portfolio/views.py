@@ -36,3 +36,5 @@ def contact_view(request):
 def contact_list(request):
     contacts = Contact.objects.order_by('-created_at')  
     return render(request, 'contact_list.html', {'contacts': contacts})
+
+    
