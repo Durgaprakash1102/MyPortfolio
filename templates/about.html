@@ -1,0 +1,380 @@
+{% extends 'includes/base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+  <title>Laxmi Prasanna | Portfolio</title>
+  <style>
+
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(27, 43, 64);
+  scroll-behavior: smooth;
+}
+
+/* About Section */
+.about-section {
+    background-color: rgb(27, 43, 64);
+    color: #f1f5f9;
+  padding: 10px 20px;
+}
+
+.about-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-left {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 250px;
+}
+
+.about-image {
+  max-width: 100%;
+  border-radius: 15px;
+  position: relative;
+  z-index: 2;
+  border: 5px solid #00c3ff;
+}
+
+/* Unique lines/design behind image */
+.about-left::before,
+.about-left::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border: 2px dashed #00c3ff;
+  z-index: 1;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.about-left::before {
+  top: -10px;
+  left: -10px;
+}
+
+.about-left::after {
+  bottom: -10px;
+  right: -10px;
+}
+
+.about-left:hover::before,
+.about-left:hover::after {
+  transform: scale(1.05) rotate(1deg);
+  border-color: #0095e6;
+}
+
+.about-right {
+  flex: 2;
+  min-width: 280px;
+}
+
+
+
+.about-right h1 span {
+  font-size: 2rem;
+  color:#0066ff;
+}
+h1 span {
+  font-size: 2rem;
+  color:#0066ff;
+}
+.about-right h3 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.about-right p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.about-details {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+ 
+}
+
+.about-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-details li {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.about-details strong {
+  color: #00c3ff;
+}
+
+/* Download Button */
+.download-cv-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00c3ff, #0066ff);
+  color: #fff;
+  border-radius: 25px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.download-cv-btn:hover {
+  background: #0095e6;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #00c3ff;
+  font-weight: bold;
+}
+
+.about-right a {
+  color: white;
+  text-decoration: none;
+}
+
+.about-right a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-left::before,
+  .about-left::after {
+    width: 90%;
+    height: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-right h1 span {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .download-cv-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+.education-section {
+  background: #1e2e40;
+  padding: 60px 20px;
+  color: #f0f8ff;
+}
+
+.edu-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #00c3ff;
+  margin-bottom: 50px;
+}
+
+.edu-timeline {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  position: relative;
+}
+
+.edu-card {
+  background: #24364c;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 195, 255, 0.2);
+  padding: 20px;
+  width: 45%;
+  position: relative;
+  border-left: 5px solid #00c3ff;
+  transition: transform 0.3s ease;
+}
+
+.edu-card:hover {
+  transform: translateY(-5px);
+}
+
+.edu-icon {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  background: #00c3ff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 0 10px #00c3ff99;
+}
+
+.left {
+  margin-right: auto;
+}
+
+.right {
+  margin-left: auto;
+}
+
+.edu-content h3 {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+.edu-content span {
+  font-size: 0.9rem;
+  color: #b0bec5;
+  display: block;
+  margin-bottom: 8px;
+  color: #0066ff;
+}
+
+.edu-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .edu-card {
+    width: 100%;
+  }
+  .left, .right {
+    margin: auto;
+  }
+}
+
+
+</style>
+
+
+</head>
+<body>
+   
+      
+      <section class="about-section">
+        <div class="about-container">
+          <div class="about-left">
+            <img src="{% static 'laxmi.jpg' %}" alt="About Me Photo" class="about-image" />
+          </div>
+          <div class="about-right">
+            <h1 class="section-title"><span>About</span> Me</h1>
+            <p>
+              Hello! I'm <strong>Elkapally Laxmi Prasanna</strong>, a passionate <strong>Full Stack Developer</strong> with 1+ years of experience. Currently working at <strong>Vindus Environment Pvt. Ltd.</strong>, I specialize in crafting robust and elegant web applications.
+              <br><br>
+              I’m proficient in <strong>HTML, CSS, JavaScript, React, Python, Django, Java, Git,</strong> and <strong>MySQL</strong>. I love building seamless, scalable, and user-friendly digital solutions.
+            </p>
+            <div class="about-details">
+              <ul>
+                <li><strong>Name:</strong> Elkapally Laxmi Prasanna</li>
+                <li><strong>Phone:</strong> +91 8328023548</li>
+                <li><strong>Experience:</strong> 1+ years</li>
+                <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/laxmiprasanna-elkapally-84b3832b9" target="_blank">laxmiprasanna-elkapally</a></li>
+              </ul>
+              <ul>
+                <li><strong>Age:</strong> 21</li>
+                <li><strong>Address:</strong> Hyderabad, India</li>
+                <li><strong>Freelance:</strong> Available</li>
+                <li><strong>Email:</strong> <a href="mailto:laxmiprasanna2593@gmail.com">laxmiprasanna2593@gmail.com</a></li>
+              </ul>
+            </div>
+            <a href="mailto:laxmiprasanna2593@gmail.com" class="download-cv-btn">Contact Me</a>
+          </div>
+        </div>
+      </section>
+      <section class="education-section">
+        <div class="container">
+          <h1 class="edu-title"><i class="fas fa-graduation-cap"></i> Educational <span>Qualification</span></h1>
+          
+          <div class="edu-timeline">
+            
+            <!-- 1 -->
+            <div class="edu-card left">
+              <div class="edu-icon"><i class="fas fa-school"></i></div>
+              <div class="edu-content">
+                <h3>ZPHS, Sangam</h3>
+                <span>2017 - 2018</span>
+                <p>Completed SSC with <strong>82%</strong></p>
+              </div>
+            </div>
+      
+            <!-- 2 -->
+            <div class="edu-card left">
+              <div class="edu-icon"><i class="fas fa-university"></i></div>
+              <div class="edu-content">
+                <h3>Narayana Junior College, Kuntloor</h3>
+                <span>2018 - 2020</span>
+                <p>Completed MPC with <strong>96.6%</strong></p>
+              </div>
+            </div>
+      
+            <!-- 3 -->
+            <div class="edu-card right">
+              <div class="edu-icon"><i class="fas fa-user-graduate"></i></div>
+              <div class="edu-content">
+                <h3>Osmania University for Women</h3>
+                <span>2020 - 2023</span>
+                <p>Graduated with <strong>91.2%</strong><br>Specialization: <strong>MPE – Electronics</strong></p>
+              </div>
+            </div>
+      
+            <!-- 4 -->
+            <div class="edu-card right">
+              <div class="edu-icon"><i class="fas fa-code"></i></div>
+              <div class="edu-content">
+                <h3>Java Full Stack Course</h3>
+                <span>2023 - 2024</span>
+                <p>Completed at <strong>360 Digrii Institute</strong><br>Focused on front-end, back-end, database & deployment</p>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </section>
+      
+</body>
+</html>
+{% endblock %}
