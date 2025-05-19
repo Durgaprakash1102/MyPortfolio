@@ -11,7 +11,6 @@
   }
 
   .contact-submissions-wrapper {
-    min-height: 100vh;
     padding: 40px 20px;
     display: flex;
     justify-content: center;
@@ -72,12 +71,29 @@
       border-radius: 15px;
     }
   }
+  .contact1-btn-nav {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 10px 16px;
+    border: 1px solid #1560bd;
+    border-radius: 10px;
+    transition: 0.3s;
+    background: rgba(0, 99, 255, 0.1);
+  }
+
+  .contact1-btn-nav:hover {
+    background: #1560bd;
+  }
 </style>
 
 <div class="contact-submissions-wrapper">
   <div class="contact-submissions-container">
-    <a href="{% url 'analytics_dashboard' %}" class="contact-btn-nav"><span>Analytics Dashboard</span></a>
-     <a href="{% url 'logout' %}" class="contact-btn-nav"><span>Logout</span></a>
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
+  <a href="{% url 'analytics_dashboard' %}" class="contact1-btn-nav"><span>Analytics Dashboard</span></a>
+  <a href="{% url 'logout' %}" class="contact1-btn-nav"><span>Logout</span></a>
+</div>
+
 
     <h1>Contact Submissions</h1>
 

@@ -1,39 +1,145 @@
 {% extends "includes/base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Analytics Dashboard</title>
-  <style>
-    .hidden { display: none; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; }
-    .analytics-section { margin-top: 20px; }
-    .btn-toggle {
-      padding: 10px 20px;
-      margin: 10px 5px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+<style>
+  body {
+      background: #1b2b40;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #1560bd;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  h1 {
+    text-align: center;
+    color: #00c3ff;
+    margin-bottom: 30px;
+  }
+
+  .nav-links {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+
+  .contact1-btn-nav {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 10px 16px;
+    border: 1px solid #1560bd;
+    border-radius: 10px;
+    transition: 0.3s;
+    background: rgba(0, 99, 255, 0.1);
+  }
+
+  .contact1-btn-nav:hover {
+    background: #1560bd;
+  }
+
+  .btn-toggle {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    background-color: #1560bd;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+  }
+
+  .btn-toggle.active,
+  .btn-toggle:hover {
+    background-color: #0040a0;
+  }
+
+  .analytics-section {
+    margin-top: 30px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    color: white;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+  }
+
+  th {
+    background-color: #1560bd;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  tr:hover {
+    background-color: rgba(21, 96, 189, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-container {
+      padding: 20px 15px;
     }
-    .btn-toggle:hover {
-      background-color: #0056b3;
+
+    table, thead, tbody, th, td, tr {
+      display: block;
     }
-    .btn-toggle.active {
-      background-color: #0056b3;
+
+    thead {
+      display: none;
     }
-  </style>
-</head>
-<body>
+
+    tr {
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    td {
+      padding: 10px 15px;
+      position: relative;
+      padding-left: 50%;
+    }
+
+    td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      font-weight: bold;
+      color: #00c3ff;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
   <h1>📊 Analytics Dashboard</h1>
 
-  <a href="{% url 'contact_list' %}" class="contact-btn-nav"><span>Contact List</span></a>
-  <a href="{% url 'logout' %}" class="contact-btn-nav"><span>Logout</span></a>
-
+  <div class="nav-links">
+    <a href="{% url 'contact_list' %}" class="contact1-btn-nav">Contact List</a>
+    <a href="{% url 'logout' %}" class="contact1-btn-nav">Logout</a>
+  </div>
 
   <!-- Toggle Buttons -->
   <div>
@@ -44,26 +150,37 @@
   </div>
 
   <!-- Sections -->
-
-  <!-- Visits Per Day shown by default (no 'hidden' class) -->
   <div id="visits" class="analytics-section">
     <h2>👥 Visits Per Day</h2>
     <table>
-      <tr><th>Date</th><th>Visits</th></tr>
-      {% for item in visits_per_day %}
-        <tr><td>{{ item.date }}</td><td>{{ item.visits }}</td></tr>
-      {% endfor %}
+      <thead>
+        <tr><th>Date</th><th>Visits</th></tr>
+      </thead>
+      <tbody>
+        {% for item in visits_per_day %}
+        <tr>
+          <td data-label="Date">{{ item.date }}</td>
+          <td data-label="Visits">{{ item.visits }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
-  <!-- Other sections hidden initially -->
   <div id="topPages" class="analytics-section hidden">
     <h2>🔗 Top Pages</h2>
     <table>
-      <tr><th>Path</th><th>Visits</th></tr>
-      {% for page in top_pages %}
-        <tr><td>{{ page.path }}</td><td>{{ page.visits }}</td></tr>
-      {% endfor %}
+      <thead>
+        <tr><th>Path</th><th>Visits</th></tr>
+      </thead>
+      <tbody>
+        {% for page in top_pages %}
+        <tr>
+          <td data-label="Path">{{ page.path }}</td>
+          <td data-label="Visits">{{ page.visits }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
@@ -75,25 +192,31 @@
   <div id="clicks" class="analytics-section hidden">
     <h2>🖱️ Top Clicked Elements</h2>
     <table>
-      <tr><th>Element</th><th>Clicks</th></tr>
-      {% for item in top_clicks %}
-        <tr><td>{{ item.clicked_element }}</td><td>{{ item.total }}</td></tr>
-      {% endfor %}
+      <thead>
+        <tr><th>Element</th><th>Clicks</th></tr>
+      </thead>
+      <tbody>
+        {% for item in top_clicks %}
+        <tr>
+          <td data-label="Element">{{ item.clicked_element }}</td>
+          <td data-label="Clicks">{{ item.total }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
+</div>
 
-  <script>
-    function toggleSection(id) {
-      const section = document.getElementById(id);
-      const allSections = document.querySelectorAll('.analytics-section');
-      allSections.forEach(s => s.classList.add('hidden'));  // Hide all sections
-      section.classList.remove('hidden');  // Show selected section
+<script>
+  function toggleSection(id) {
+    const sections = document.querySelectorAll('.analytics-section');
+    const buttons = document.querySelectorAll('.btn-toggle');
 
-      // Update active button
-      document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`button[onclick="toggleSection('${id}')"]`).classList.add('active');
-    }
-  </script>
-</body>
-</html>
+    sections.forEach(section => section.classList.add('hidden'));
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById(id).classList.remove('hidden');
+    document.querySelector(`button[onclick="toggleSection('${id}')"]`).classList.add('active');
+  }
+</script>
 {% endblock %}
